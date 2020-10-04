@@ -17,5 +17,7 @@ def normalizing():
         write_text_file.write(normaltext.encode("utf-8"))
         write_text_file.close()
 
+# testing for sobhan
+
 if __name__ == "__main__":
     normalizing()
