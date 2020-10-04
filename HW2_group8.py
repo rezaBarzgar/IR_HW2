@@ -35,10 +35,3 @@ def split_paragraphs(text):
 if __name__ == "__main__":
     normalized_txt = normalizing()
     paragraphs_list = split_paragraphs(normalized_txt)
-
-    for par in paragraphs_list:
-        tokenizer = WordTokenizer()
-        word_tokens = tokenizer.tokenize(par)
-
-        print(word_tokens)
-
