@@ -1,7 +1,6 @@
-from __future__ import unicode_literals
 from hazm import *
-import xlwt
 from xlwt import Workbook
+import random
 
 
 def normalizing():
@@ -17,16 +16,18 @@ def normalizing():
 
         normalizer = Normalizer(token_based=True)
         normal_text = normalizer.punctuation_spacing(normalizer.character_refinement(normalizer.affix_spacing(text)))
+
         sentences_count(normal_text)
+        random_selection(normal_text)
 
         # write_text_file = open("./group8NormalizedText.txt", "wb")
         # write_text_file.write(normal_text.encode("utf-8"))
         # write_text_file.close()
 
 
-def sentences_count(paragraphs):
+def sentences_count(text):
     # writer reza
-    paragraphs_list = split_paragraphs(paragraphs)
+    paragraphs_list = split_paragraphs(text)
 
     wb = Workbook()
     sheet1 = wb.add_sheet('Sheet 1')
@@ -47,6 +48,21 @@ def sentences_count(paragraphs):
     #     sheet1.write(i + 1, 4, len( find nouns  ))
 
     wb.save('HW2.xls')
+
+
+def random_selection(text):         # ---- select 5 random sentences for other queries ----
+
+    random_sentences = []
+
+    sentence_tokenizer = SentenceTokenizer()
+    all_sentences = sentence_tokenizer.tokenize(text)
+
+    random_list = random.sample(range(0, len(all_sentences)), 5)            # ---- generate 5 random number
+
+    for index in random_list:
+        random_sentences.append(all_sentences[index])
+
+    return random_sentences
 
 
 def split_paragraphs(text):
