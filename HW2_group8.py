@@ -37,9 +37,14 @@ def sentences_count(paragraphs):
     sheet1.write(0, 4, 'تعداد اسم ها')
 
     sentence_tokenizer = SentenceTokenizer()
+    word_tokenizer = WordTokenizer()
+
     for i in range(len(paragraphs_list)):
-        sheet1.write(i + 1, 0, i)
+        sheet1.write(i + 1, 0, i + 1)
         sheet1.write(i + 1, 1, len(sentence_tokenizer.tokenize(paragraphs_list[i])))
+        sheet1.write(i + 1, 2, len(word_tokenizer.tokenize(paragraphs_list[i])))
+    #     sheet1.write(i + 1, 3, len( find verbs  ))
+    #     sheet1.write(i + 1, 4, len( find nouns  ))
 
     wb.save('HW2.xls')
 
