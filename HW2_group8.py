@@ -1,6 +1,6 @@
 import hazm
 
-with open("./ConvertedFile.txt", 'r', encoding="utf8") as file:
+with open("./group8text.txt", 'r', encoding="utf8") as file:
     text = file.read()
 
-print(text)
+print(text)  # ---- khob belakhare file txt ro darim, berim bra asl majera :))
