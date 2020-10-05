@@ -39,25 +39,30 @@ def sentences_count(text):
 
     sentence_tokenizer = SentenceTokenizer()
     word_tokenizer = WordTokenizer()
+    tagger = POSTagger(model='resources/postagger.model')
 
     for i in range(len(paragraphs_list)):
         sheet1.write(i + 1, 0, i + 1)
         sheet1.write(i + 1, 1, len(sentence_tokenizer.tokenize(paragraphs_list[i])))
-        sheet1.write(i + 1, 2, len(word_tokenizer.tokenize(paragraphs_list[i])))
+        token_list = word_tokenizer.tokenize(paragraphs_list[i])
+        sheet1.write(i + 1, 2, len(token_list))
+        tup_list = tagger.tag(token_list)
+        verb_list = [item for item in tup_list if item[0] == 'V']
+        sheet1.write(i + 1, 3, len(verb_list))
     #     sheet1.write(i + 1, 3, len( find verbs  ))
     #     sheet1.write(i + 1, 4, len( find nouns  ))
 
     wb.save('HW2.xls')
 
 
-def random_selection(text):         # ---- select 5 random sentences for other queries ----
+def random_selection(text):  # ---- select 5 random sentences for other queries ----
 
     random_sentences = []
 
     sentence_tokenizer = SentenceTokenizer()
     all_sentences = sentence_tokenizer.tokenize(text)
 
-    random_list = random.sample(range(0, len(all_sentences)), 5)            # ---- generate 5 random number
+    random_list = random.sample(range(0, len(all_sentences)), 5)  # ---- generate 5 random number
 
     for index in random_list:
         random_sentences.append(all_sentences[index])
