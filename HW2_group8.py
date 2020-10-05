@@ -9,25 +9,14 @@ def normalizing():
     with open("./group8text.txt", 'r', encoding="utf8") as file:
         text = file.read()
 
-        # print("Before normalize")
-        # print(text)
-        # print("--------------------------------------------------------------------")
-        # print("After normalize")
-
         normalizer = Normalizer(token_based=True)
         normal_text = normalizer.punctuation_spacing(normalizer.character_refinement(normalizer.affix_spacing(text)))
 
-        sentences_count(normal_text)
-        random_selection(normal_text)
-
-        # write_text_file = open("./group8NormalizedText.txt", "wb")
-        # write_text_file.write(normal_text.encode("utf-8"))
-        # write_text_file.close()
+        return normal_text
 
 
-def sentences_count(text):
+def sentences_count(paragraphs_list):
     # writer reza
-    paragraphs_list = split_paragraphs(text)
 
     wb = Workbook()
     sheet1 = wb.add_sheet('Sheet 1')
@@ -39,23 +28,42 @@ def sentences_count(text):
 
     sentence_tokenizer = SentenceTokenizer()
     word_tokenizer = WordTokenizer()
-    tagger = POSTagger(model='resources/postagger.model')
+    # tagger = POSTagger(model="./postagger.model")
 
     for i in range(len(paragraphs_list)):
         sheet1.write(i + 1, 0, i + 1)
         sheet1.write(i + 1, 1, len(sentence_tokenizer.tokenize(paragraphs_list[i])))
         token_list = word_tokenizer.tokenize(paragraphs_list[i])
         sheet1.write(i + 1, 2, len(token_list))
-        tup_list = tagger.tag(token_list)
-        verb_list = [item for item in tup_list if item[0] == 'V']
-        sheet1.write(i + 1, 3, len(verb_list))
+
+        # tup_list = tagger.tag(token_list)
+        # verb_list = [item for item in tup_list if item[0] == 'V']
+
+        # sheet1.write(i + 1, 3, len(verb_list))
     #     sheet1.write(i + 1, 3, len( find verbs  ))
     #     sheet1.write(i + 1, 4, len( find nouns  ))
 
     wb.save('HW2.xls')
 
 
-def random_selection(text):  # ---- select 5 random sentences for other queries ----
+def fine_tokens(sentences):
+    # writer sobhan
+
+    word_tokenizer = WordTokenizer()
+    for sentence in sentences:
+        tokens = word_tokenizer.tokenize(sentence)
+
+        print(tokens)
+        print("-------------------------------")
+
+
+def random_selection(paragraphs_list):  # ---- select 5 random sentences for other queries ----
+    # writer sobhan
+
+    text = ""
+
+    for par in paragraphs_list:  # ---- In order to merge all sentences in one string ----
+        text += par
 
     random_sentences = []
 
@@ -72,6 +80,7 @@ def random_selection(text):  # ---- select 5 random sentences for other queries 
 
 def split_paragraphs(text):
     # writer sobhan
+
     paragraphs = text.split("پاراگراف")[1:]
 
     for i in range(len(paragraphs)):
@@ -81,4 +90,8 @@ def split_paragraphs(text):
 
 
 if __name__ == "__main__":
-    normalizing()
+    normal_text = normalizing()
+    paragraphs_list = split_paragraphs(normal_text)
+    sentences_count(paragraphs_list)
+    random_sentences = random_selection(paragraphs_list)
+    fine_tokens(random_sentences)
