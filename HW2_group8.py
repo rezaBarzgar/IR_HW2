@@ -57,7 +57,7 @@ def fine_tokens(sentences):
         print("-------------------------------")
 
 
-def random_selection(paragraphs_list):  # ---- select 5 random sentences for other queries ----
+def random_selection(paragraphs_list):      # ---- select 5 random sentences for other queries ----
     # writer sobhan
 
     text = ""
