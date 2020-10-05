@@ -30,20 +30,22 @@ def sentences_count(paragraphs_list):
 
     sentence_tokenizer = SentenceTokenizer()
     word_tokenizer = WordTokenizer()
-    # tagger = POSTagger(model="./postagger.model")
+    tagger = POSTagger(model="resources/postagger.model")
 
+    
     for i in range(len(paragraphs_list)):
         sheet1.write(i + 1, 0, i + 1)
         sheet1.write(i + 1, 1, len(sentence_tokenizer.tokenize(paragraphs_list[i])))
         token_list = word_tokenizer.tokenize(paragraphs_list[i])
         sheet1.write(i + 1, 2, len(token_list))
 
-        # tup_list = tagger.tag(token_list)
-        # verb_list = [item for item in tup_list if item[0] == 'V']
+        tup_list = tagger.tag(token_list)
+        verb_list = [item for item in tup_list if item[0] == 'V']
+        noun_list = [item for item in tup_list if item[0] == 'N']
 
-        # sheet1.write(i + 1, 3, len(verb_list))
+        sheet1.write(i + 1, 3, len(verb_list))
     #     sheet1.write(i + 1, 3, len( find verbs  ))
-    #     sheet1.write(i + 1, 4, len( find nouns  ))
+        sheet1.write(i + 1, 4, len(noun_list))
 
     wb.save('HW2.xls')
 
