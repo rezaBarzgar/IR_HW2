@@ -54,8 +54,10 @@ def sentences_count(paragraphs_list):
     wb.save('HW2.xls')
 
 
-def fine_tokens(sentences):
+def find_tokens(sentences):
     # writer sobhan
+
+    tokens_list = []
 
     word_tokenizer = WordTokenizer()
     for sentence in sentences:
@@ -63,6 +65,9 @@ def fine_tokens(sentences):
 
         print(tokens)
         print("-------------------------------")
+        tokens_list.append(tokens)
+
+    return tokens_list
 
 
 def random_selection(paragraphs_list):      # ---- select 5 random sentences for other queries ----
@@ -96,10 +101,45 @@ def split_paragraphs(text):
 
     return paragraphs
 
+def risheYab(tokens_list):
+
+    lemmatizer = Lemmatizer()
+    stemmer = Stemmer()
+
+    tokes = []
+    lem_stem = []
+
+    tagger = POSTagger(model="resources/postagger.model")
+
+    for ele in tokens_list:
+
+        tup_list = tagger.tag(ele)
+
+        verb_list = [item for item in tup_list if item[1] == 'V']
+        noun_list = [item for item in tup_list if item[1] == 'N']
+
+        print("#####")
+        print(ele)
+        print()
+
+        for verb in verb_list:
+            tokes.append(lemmatizer.lemmatize(verb[0]))
+
+        for noun in noun_list:
+            tokes.append(stemmer.stem(noun[0]))
+
+        lem_stem.append(tokes)
+
+    return lem_stem
 
 if __name__ == "__main__":
     normal_text = normalizing()
     paragraphs_list = split_paragraphs(normal_text)
     sentences_count(paragraphs_list)
     random_sentences = random_selection(paragraphs_list)
-    fine_tokens(random_sentences)
+    tokens_list = find_tokens(random_sentences)
+    lem = risheYab(tokens_list)
+
+    #for ele in lem:
+        #print(ele)
+        #print("----")
