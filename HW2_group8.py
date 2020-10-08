@@ -3,6 +3,7 @@
 from hazm import *
 from xlwt import Workbook
 import random
+import re
 
 
 def normalizing():
@@ -13,7 +14,6 @@ def normalizing():
 
         normalizer = Normalizer(token_based=True)
         normal_text = normalizer.punctuation_spacing(normalizer.character_refinement(normalizer.affix_spacing(text)))
-
         return normal_text
 
 
@@ -40,13 +40,17 @@ def sentences_count(paragraphs_list):
         sheet1.write(i + 1, 2, len(token_list))
 
         tup_list = tagger.tag(token_list)
-        verb_list = [item for item in tup_list if item[0] == 'V']
-        noun_list = [item for item in tup_list if item[0] == 'N']
+
+        verb_list = [item for item in tup_list if item[1] == 'V']
+        noun_list = [item for item in tup_list if item[1] == 'N']
 
         sheet1.write(i + 1, 3, len(verb_list))
     #     sheet1.write(i + 1, 3, len( find verbs  ))
         sheet1.write(i + 1, 4, len(noun_list))
 
+    
+    print(verb_list)
+    print(noun_list)
     wb.save('HW2.xls')
 
 
