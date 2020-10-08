@@ -1,14 +1,12 @@
 #!/usr/bin/python
 # coding=utf-8
+
 from hazm import *
 from xlwt import Workbook
 import random
-import re
 
 
 def normalizing():
-    # writer armin,reza,sobhan
-
     with open("./group8text.txt", 'r', encoding="utf8") as file:
         text = file.read()
 
@@ -18,8 +16,6 @@ def normalizing():
 
 
 def sentences_count(paragraphs_list):
-    # writer reza
-
     wb = Workbook()
     sheet1 = wb.add_sheet('Sheet 1')
     sheet1.write(0, 0, 'شماره پاراگراف')
@@ -32,10 +28,10 @@ def sentences_count(paragraphs_list):
     word_tokenizer = WordTokenizer()
     tagger = POSTagger(model="resources/postagger.model")
 
-    
     for i in range(len(paragraphs_list)):
         sheet1.write(i + 1, 0, i + 1)
         sheet1.write(i + 1, 1, len(sentence_tokenizer.tokenize(paragraphs_list[i])))
+
         token_list = word_tokenizer.tokenize(paragraphs_list[i])
         sheet1.write(i + 1, 2, len(token_list))
 
@@ -45,34 +41,24 @@ def sentences_count(paragraphs_list):
         noun_list = [item for item in tup_list if item[1] == 'N']
 
         sheet1.write(i + 1, 3, len(verb_list))
-    #     sheet1.write(i + 1, 3, len( find verbs  ))
         sheet1.write(i + 1, 4, len(noun_list))
 
-    
-    print(verb_list)
-    print(noun_list)
     wb.save('HW2.xls')
 
 
 def find_tokens(sentences):
-    # writer sobhan
-
     tokens_list = []
 
     word_tokenizer = WordTokenizer()
     for sentence in sentences:
         tokens = []
         tokens = word_tokenizer.tokenize(sentence)
-
-        print(tokens)
-        print("-------------------------------")
         tokens_list.append(tokens)
 
     return tokens_list
 
 
-def random_selection(paragraphs_list):      # ---- select 5 random sentences for other queries ----
-    # writer sobhan
+def random_selection(paragraphs_list):  # ---- select 5 random sentences for other queries ----
 
     text = ""
 
@@ -93,8 +79,6 @@ def random_selection(paragraphs_list):      # ---- select 5 random sentences for
 
 
 def split_paragraphs(text):
-    # writer sobhan
-
     paragraphs = text.split("پاراگراف")[1:]
 
     for i in range(len(paragraphs)):
@@ -102,33 +86,33 @@ def split_paragraphs(text):
 
     return paragraphs
 
-def risheYab(tokens_list):
 
+def risheYab(tokens_list):
     lemmatizer = Lemmatizer()
     stemmer = Stemmer()
 
-    tokes = []
     lem_stem = []
 
     tagger = POSTagger(model="resources/postagger.model")
 
     for ele in tokens_list:
 
-        tokes = []
+        tokens = []
         tup_list = tagger.tag(ele)
 
-        verb_list = [item for item in tup_list if item[1] == 'V']
+        verb_list  = [item for item in tup_list if item[1] == 'V']
         other_list = [item for item in tup_list if item[1] != 'V']
 
         for verb in verb_list:
-            tokes.append(lemmatizer.lemmatize(verb[0]))
+            tokens.append(lemmatizer.lemmatize(verb[0]))
 
         for noun in other_list:
-            tokes.append(stemmer.stem(noun[0]))
+            tokens.append(stemmer.stem(noun[0]))
 
-        lem_stem.append(tokes)
+        lem_stem.append(tokens)
 
     return lem_stem
+
 
 if __name__ == "__main__":
     normal_text = normalizing()
@@ -136,8 +120,8 @@ if __name__ == "__main__":
     sentences_count(paragraphs_list)
     random_sentences = random_selection(paragraphs_list)
     tokens_list = find_tokens(random_sentences)
-    lem = risheYab(tokens_list)
+    lem_stem_list = risheYab(tokens_list)
 
-    for ele in lem:
+    for ele in lem_stem_list:
+        print("#sentence")
         print(ele)
-        print("##")
