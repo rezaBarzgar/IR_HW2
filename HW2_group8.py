@@ -61,6 +61,7 @@ def find_tokens(sentences):
 
     word_tokenizer = WordTokenizer()
     for sentence in sentences:
+        tokens = []
         tokens = word_tokenizer.tokenize(sentence)
 
         print(tokens)
@@ -113,19 +114,16 @@ def risheYab(tokens_list):
 
     for ele in tokens_list:
 
+        tokes = []
         tup_list = tagger.tag(ele)
 
         verb_list = [item for item in tup_list if item[1] == 'V']
-        noun_list = [item for item in tup_list if item[1] == 'N']
-
-        print("#####")
-        print(ele)
-        print()
+        other_list = [item for item in tup_list if item[1] != 'V']
 
         for verb in verb_list:
             tokes.append(lemmatizer.lemmatize(verb[0]))
 
-        for noun in noun_list:
+        for noun in other_list:
             tokes.append(stemmer.stem(noun[0]))
 
         lem_stem.append(tokes)
@@ -140,6 +138,6 @@ if __name__ == "__main__":
     tokens_list = find_tokens(random_sentences)
     lem = risheYab(tokens_list)
 
-    #for ele in lem:
-        #print(ele)
-        #print("----")
+    for ele in lem:
+        print(ele)
+        print("##")
